@@ -1,0 +1,62 @@
+package com.security.template.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class CorsConfig {
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/")
+                        .allowedOrigins("http://localhost:5173")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+            }
+        };
+}
+
+}
+  21 changes: 21 additions & 0 deletions21  
+...e/Security Template/src/main/java/com/security/template/controller/BookingController.java
+Original file line number	Diff line number	Diff line change
+@@ -1,5 +1,6 @@
+package com.security.template.controller;
+
+import com.security.template.dto.StatusDto;
+import com.security.template.model.Booking;
+import com.security.template.service.BookingService;
+import org.springframework.beans.factory.annotation.Autowired;
+@@ -58,6 +59,26 @@ public ResponseEntity<?> deleteBooking(@PathVariable Long id) {
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PatchMapping("/update-status/{hallID}")
+    public ResponseEntity<?> updateHallStatus(@PathVariable Long hallID, @RequestBody StatusDto hallStatus) {
+
+        try{
+
+            Boolean response = bs.updateHallStatus(hallID, hallStatus);
+
+            if(response)
+                return new ResponseEntity<>("Hall : " + hallID + " updated successfully to status - " + hallStatus.getBookingStatus(), HttpStatus.OK);
+            else
+                return new ResponseEntity<>("Hall not found", HttpStatus.NOT_FOUND);
+
+        }catch (Exception e){
+
+
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+
+}
