@@ -1,0 +1,78 @@
+package com.security.template.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class StatusDto {
+
+    private String bookingStatus;
+}
+  16 changes: 12 additions & 4 deletions16  
+...ecurity-Template/Security Template/src/main/java/com/security/template/model/Booking.java
+Original file line number	Diff line number	Diff line change
+@@ -31,6 +31,8 @@ public class Booking {
+    @Temporal(TemporalType.DATE)
+    private Date todate;
+
+    private String bookingStatus;
+
+//    @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(name="user_id")
+@@ -47,8 +49,7 @@ public class Booking {
+    public Booking() {
+    }
+
+    public Booking(Long id, String occasion, String guest, Long contact, Long budget, String food, Date fromdate,
+            Date todate, User users, Hall halls) {
+    public Booking(Long id, String occasion, String guest, Long contact, Long budget, String food, Date fromdate, Date todate, String bookingStatus, User users, Hall halls) {
+        this.id = id;
+        this.occasion = occasion;
+        this.guest = guest;
+@@ -57,6 +58,7 @@ public Booking(Long id, String occasion, String guest, Long contact, Long budget
+        this.food = food;
+        this.fromdate = fromdate;
+        this.todate = todate;
+        this.bookingStatus = bookingStatus;
+        this.users = users;
+        this.halls = halls;
+    }
+@@ -125,6 +127,14 @@ public void setTodate(Date todate) {
+        this.todate = todate;
+    }
+
+    public String getBookingStatus() {
+        return bookingStatus;
+    }
+
+    public void setBookingStatus(String bookingStatus) {
+        this.bookingStatus = bookingStatus;
+    }
+
+    public User getUsers() {
+        return users;
+    }
+@@ -140,6 +150,4 @@ public Hall getHalls() {
+    public void setHalls(Hall halls) {
+        this.halls = halls;
+    }
+
+
+}
+  2 changes: 2 additions & 0 deletions2  
+...e/Security-Template/Security Template/src/main/java/com/security/template/model/User.java
+Original file line number	Diff line number	Diff line change
+@@ -25,6 +25,8 @@ public class User implements UserDetails {
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+    private String name;
+
+    @Column(unique = true)
+    private String email;
+    private String password;
